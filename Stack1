@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define SIZE 5
+
+struct stack {
+    int top;
+    int data[SIZE];
+};
+
+typedef struct stack STACK;
+
+// Function to push element into stack
+void push(STACK *s, int item) {
+    if (s->top == SIZE - 1) {
+        printf("\nStack Overflow\n");
+    } else {
+        s->top = s->top + 1;
+        s->data[s->top] = item;
+        printf("\n%d pushed onto stack\n", item);
+    }
+}
+
+// Function to pop element from stack
+void pop(STACK *s) {
+    if (s->top == -1) {
+        printf("\nStack Underflow\n");
+    } else {
+        printf("\nElement popped is %d\n", s->data[s->top]);
+        s->top = s->top - 1;
+    }
+}
+
+// Function to display stack contents
+void display(STACK s) {
+    int i;
+    if (s.top == -1) {
+        printf("\nStack is Empty\n");
+    } else {
+        printf("\nStack contents are:\n");
+        for (i = s.top; i >= 0; i--) {
+            printf("%d\n", s.data[i]);
+        }
+    }
+}
+
+// Main function
+int main() {
+    STACK S;
+    int ch, item;
+    S.top = -1;
+
+    while (1) {
+        printf("\n--- Stack Menu ---");
+        printf("\n1. Push");
+        printf("\n2. Pop");
+        printf("\n3. Display");
+        printf("\n4. Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", &ch);
+
+        switch (ch) {
+            case 1:
+                printf("Enter element to push: ");
+                scanf("%d", &item);
+                push(&S, item);
+                break;
+
+            case 2:
+                pop(&S);
+                break;
+
+            case 3:
+                display(S);
+                break;
+
+            case 4:
+                exit(0);
+
+            default:
+                printf("\nInvalid choice! Try again.\n");
+        }
+    }
+    return 0;
+}
