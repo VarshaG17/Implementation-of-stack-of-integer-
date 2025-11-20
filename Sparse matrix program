@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int row, col, value;
+    struct node *addr;
+};
+typedef struct node *NODE;
+
+/* Insert element at end of sparse list */
+NODE insertend(NODE start, int r, int c, int val) {
+    NODE temp, cur;
+    temp = (NODE)malloc(sizeof(struct node));
+    temp->row = r;
+    temp->col = c;
+    temp->value = val;
+    temp->addr = NULL;
+
+    if (start == NULL)
+        return temp;
+
+    cur = start;
+    while (cur->addr != NULL)
+        cur = cur->addr;
+
+    cur->addr = temp;
+    return start;
+}
+
+/* Display sparse matrix (list format) */
+void display(NODE start) {
+    NODE temp;
+
+    if (start == NULL) {
+        printf("\nSparse matrix is empty\n");
+        return;
+    }
+
+    printf("\nRow  Col  Value\n");
+    temp = start;
+    while (temp != NULL) {
+        printf("%d    %d     %d\n", temp->row, temp->col, temp->value);
+        temp = temp->addr;
+    }
+}
+
+/* Display full matrix form */
+void displayMatrix(NODE start, int m, int n) {
+    int i, j;
+    NODE temp = start;
+
+    printf("\nFull Matrix:\n");
+    for (i = 0; i < m; i++) {
+        for (j = 0; j < n; j++) {
+            temp = start;
+            int found = 0;
+
+            while (temp != NULL) {
+                if (temp->row == i && temp->col == j) {
+                    printf("%d ", temp->value);
+                    found = 1;
+                    break;
+                }
+                temp = temp->addr;
+            }
+
+            if (!found)
+                printf("0 ");
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    NODE sparse = NULL;
+    int m, n, i, j, val;
+
+    printf("Enter number of rows and columns: ");
+    scanf("%d %d", &m, &n);
+
+    printf("\nEnter matrix elements:\n");
+    for (i = 0; i < m; i++) {
+        for (j = 0; j < n; j++) {
+            scanf("%d", &val);
+
+            if (val != 0)
+                sparse = insertend(sparse, i, j, val);
+        }
+    }
+
+    printf("\nSparse Matrix (List Representation):\n");
+    display(sparse);
+
+    printf("\nSparse Matrix (Full Form):\n");
+    displayMatrix(sparse, m, n);
+
+    return 0;
+}
