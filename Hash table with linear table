@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int tsize, hash[10], count = 0;
+
+/* Hash function */
+int Cal_Hash(int key) {
+    return key % tsize;
+}
+
+/* Rehash function (linear probing) */
+int Cal_ReHash(int key) {
+    return (key + 1) % tsize;
+}
+
+/* Insert operation */
+void insert(int key) {
+    int index;
+
+    if (count != tsize) {
+        index = Cal_Hash(key);
+
+        while (hash[index] != -1) {
+            index = Cal_ReHash(index);
+        }
+
+        hash[index] = key;
+        count++;
+    } else {
+        printf("\nTable is full");
+    }
+}
+
+/* Search operation */
+int search(int key) {
+    int i, index, loc;
+
+    index = Cal_Hash(key);
+
+    for (i = 0; i < tsize; i++) {
+        loc = (index + i) % tsize;
+
+        if (hash[loc] == key)
